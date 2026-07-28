@@ -9,7 +9,9 @@ public class ARController : MonoBehaviour
 
     [Header("Animations")]
     [SerializeField] private Animator cdCaseAnimator;
-    [SerializeField] private Animator[] pointerAnimators;
+    [SerializeField] private Animator pointerSideAnimator;
+    [SerializeField] private Animator pointerDownAnimator;
+    [SerializeField] private Animator pointerSideUpAnimator;
 
     private ZapparImageTrackingTarget trackingTarget;
 
@@ -30,33 +32,29 @@ public class ARController : MonoBehaviour
         trackingTarget.OnNotSeenEvent.RemoveListener(OnImageLost);
     }
 
+    private void SetAnimators(bool enabled)
+    {
+        if (cdCaseAnimator != null)
+            cdCaseAnimator.enabled = enabled;
+        if (pointerSideAnimator != null)
+            pointerSideAnimator.enabled = enabled;
+        if (pointerDownAnimator != null)
+            pointerDownAnimator.enabled = enabled;
+        if (pointerSideUpAnimator != null)
+            pointerSideUpAnimator.enabled = enabled;
+    }
+
     private void OnImageFound()
     {
         if (arContentRoot != null)
             arContentRoot.SetActive(true);
-
-        if (cdCaseAnimator != null)
-            cdCaseAnimator.enabled = true;
-
-        foreach (var anim in pointerAnimators)
-        {
-            if (anim != null)
-                anim.enabled = true;
-        }
+        SetAnimators(true);
     }
 
     private void OnImageLost()
     {
         if (arContentRoot != null)
             arContentRoot.SetActive(false);
-
-        if (cdCaseAnimator != null)
-            cdCaseAnimator.enabled = false;
-
-        foreach (var anim in pointerAnimators)
-        {
-            if (anim != null)
-                anim.enabled = false;
-        }
+        SetAnimators(false);
     }
 }

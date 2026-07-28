@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 72e78c63765500647a0c073ab1662d02
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - arContentRoot: {fileID: 3388400688934218550, guid: cbe95c349b06354488bb8b390fff5421, type: 3}
+  - cdCaseAnimator: {instanceID: 0}
+  - pointerSideAnimator: {instanceID: 0}
+  - pointerDownAnimator: {instanceID: 0}
+  - pointerSideUpAnimator: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
