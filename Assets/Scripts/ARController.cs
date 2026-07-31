@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Zappar;
 
 [RequireComponent(typeof(ZapparImageTrackingTarget))]
@@ -7,17 +8,37 @@ public class ARController : MonoBehaviour
     [Header("AR Content")]
     [SerializeField] private GameObject arContentRoot;
 
-    [Header("Animations")]
-    [SerializeField] private Animator cdCaseAnimator;
-    [SerializeField] private Animator pointerSideAnimator;
-    [SerializeField] private Animator pointerDownAnimator;
-    [SerializeField] private Animator pointerSideUpAnimator;
-
     private ZapparImageTrackingTarget trackingTarget;
+    private Canvas createdCanvas;
 
     private void Awake()
     {
         trackingTarget = GetComponent<ZapparImageTrackingTarget>();
+    }
+
+    private void Start()
+    {
+        ZapparCamera zc = FindAnyObjectByType<ZapparCamera>();
+        if (zc == null) return;
+
+        Camera cam = zc.GetComponent<Camera>();
+        if (cam == null) return;
+
+        if (arContentRoot == null) return;
+
+        Canvas oldCanvas = arContentRoot.GetComponentInChildren<Canvas>(true);
+        if (oldCanvas == null) return;
+
+        CanvasFitToTrackedImage fitter = oldCanvas.GetComponent<CanvasFitToTrackedImage>();
+        if (fitter != null) Destroy(fitter);
+
+        createdCanvas = oldCanvas;
+        createdCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        createdCanvas.worldCamera = cam;
+        createdCanvas.planeDistance = 10f;
+        createdCanvas.sortingOrder = 1000;
+
+        oldCanvas.gameObject.SetActive(true);
     }
 
     private void OnEnable()
@@ -32,29 +53,15 @@ public class ARController : MonoBehaviour
         trackingTarget.OnNotSeenEvent.RemoveListener(OnImageLost);
     }
 
-    private void SetAnimators(bool enabled)
-    {
-        if (cdCaseAnimator != null)
-            cdCaseAnimator.enabled = enabled;
-        if (pointerSideAnimator != null)
-            pointerSideAnimator.enabled = enabled;
-        if (pointerDownAnimator != null)
-            pointerDownAnimator.enabled = enabled;
-        if (pointerSideUpAnimator != null)
-            pointerSideUpAnimator.enabled = enabled;
-    }
-
     private void OnImageFound()
     {
         if (arContentRoot != null)
             arContentRoot.SetActive(true);
-        SetAnimators(true);
     }
 
     private void OnImageLost()
     {
         if (arContentRoot != null)
             arContentRoot.SetActive(false);
-        SetAnimators(false);
     }
 }

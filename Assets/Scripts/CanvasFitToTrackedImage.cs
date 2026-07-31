@@ -8,6 +8,14 @@ public class CanvasFitToTrackedImage : MonoBehaviour
 
     private void Start()
     {
+        Canvas canvas = GetComponent<Canvas>();
+        if (canvas.worldCamera == null)
+        {
+            ZapparCamera zc = FindAnyObjectByType<ZapparCamera>();
+            if (zc != null)
+                canvas.worldCamera = zc.GetComponent<Camera>();
+        }
+
         if (trackingTarget == null)
             trackingTarget = GetComponentInParent<ZapparImageTrackingTarget>();
 
