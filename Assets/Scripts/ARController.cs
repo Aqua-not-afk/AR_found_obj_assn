@@ -53,13 +53,13 @@ public class ARController : MonoBehaviour
         trackingTarget.OnNotSeenEvent.RemoveListener(OnImageLost);
     }
 
-    private void OnImageFound()
+    public void OnImageFound()
     {
         if (arContentRoot != null)
             arContentRoot.SetActive(true);
     }
 
-    private void OnImageLost()
+    public void OnImageLost()
     {
         if (arContentRoot != null)
             arContentRoot.SetActive(false);
